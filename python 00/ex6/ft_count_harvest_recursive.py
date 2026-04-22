@@ -1,7 +1,7 @@
 def ft_count_harvest_recursive(
     days_til_harvest: int | None = None,
     countdown: int = 1
-):
+) -> None:
     if days_til_harvest is None:
         days_til_harvest = int(input('Days until harvest: '))
     if countdown > days_til_harvest:
