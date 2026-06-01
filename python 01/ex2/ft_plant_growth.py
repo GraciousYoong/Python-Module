@@ -23,7 +23,7 @@ def main():
     print("=== Garden Plant Growth ===")
     rose.show()
     for day in range(1, 8):
-        print(f"Day {day}")
+        print(f"=== Day {day} ===")
         rose.grow()
         rose.age()
         rose.show()
