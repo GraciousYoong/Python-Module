@@ -2,7 +2,7 @@
 
 class Plant:
     def __init__(self, name: str,
-                 height: int,
+                 height: float,
                  age: int) -> None:
         self.name = name
         self.height = height
@@ -11,13 +11,14 @@ class Plant:
     def show(self):
         print(f"{self.name}: {self.height}cm, {self.age} days old")
 
-
-rose = Plant("Rose", 25, 30)
-sunflower = Plant("Sunflower", 80, 45)
-cactus = Plant("Cactus", 15, 120)
+def main():
+    rose = Plant("Rose", 25, 30)
+    sunflower = Plant("Sunflower", 80, 45)
+    cactus = Plant("Cactus", 15, 120)
+    plant_list = [rose, sunflower, cactus]
+    print("=== Garden Plant Registry ===")
+    for plant in plant_list:
+        plant.show()
 
 if __name__ == "__main__":
-    print("=== Garden Plant Registry ===")
-    rose.show()
-    sunflower.show()
-    cactus.show()
+    main()
