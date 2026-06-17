@@ -3,6 +3,8 @@
 import sys
 
 
+# Example input: python3 ft_inventory_system.py sword:1 potion:5
+# shield:2 armor:3 helmet:1
 def main() -> None:
     print("=== Inventory System Analysis ===")
 

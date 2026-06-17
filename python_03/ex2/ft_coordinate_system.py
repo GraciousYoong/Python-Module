@@ -38,7 +38,7 @@ def get_player_pos() -> tuple[float, float, float]:
         return (x, y, z)
 
 
-def main()-> None:
+def main() -> None:
     print("=== Game Coordinate System ===")
 
     print("Get a first set of coordinates")
