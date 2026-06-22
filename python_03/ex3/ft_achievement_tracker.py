@@ -41,13 +41,13 @@ def main() -> None:
     all_achievements = alice.union(
         bob,
         charlie,
-        dylan,
+        dylan
     )
 
     common_achievements = alice.intersection(
         bob,
         charlie,
-        dylan,
+        dylan
     )
 
     print(f"All distinct achievements: {all_achievements}")

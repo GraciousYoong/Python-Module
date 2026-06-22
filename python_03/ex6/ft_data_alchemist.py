@@ -20,7 +20,7 @@ def main() -> None:
     )
 
     capitalized_only = [
-        name for name in capitalized_all
+        name for name in players
         if name == name.capitalize()
     ]
 
