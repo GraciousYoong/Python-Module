@@ -20,22 +20,30 @@ def secure_archive(
         return False, str(error)
 
 
-print("=== Cyber Archives Security ===")
+def main() -> None:
+    print("=== Cyber Archives Security ===\n")
 
-print("Using 'secure_archive' to read from a nonexistent file:")
-print(secure_archive("/not/existing/file", "read"))
+    print("Using 'secure_archive' to read from a nonexistent file:")
+    print(secure_archive("/not/existing/file", "read"))
+    print("\n")
 
-print("Using 'secure_archive' to read from an inaccessible file:")
-print(secure_archive("/etc/master.passwd", "read"))
+    print("Using 'secure_archive' to read from an inaccessible file:")
+    print(secure_archive("/etc/master.passwd", "read"))
+    print("\n")
 
-print("Using 'secure_archive' to read from a regular file:")
-print(secure_archive("ancient_fragment.txt", "read"))
+    print("Using 'secure_archive' to read from a regular file:")
+    print(secure_archive("ancient_fragment.txt", "read"))
+    print("\n")
 
-print("Using 'secure_archive' to write previous content to a new file:")
-print(
-    secure_archive(
-        "new_archive.txt",
-        "write",
-        "[FRAGMENT TEST] Data preserved successfully\n",
+    print("Using 'secure_archive' to write previous content to a new file:")
+    print(
+        secure_archive(
+            "new_archive.txt",
+            "write",
+            "[FRAGMENT TEST] Data preserved successfully\n",
+        )
     )
-)
+
+
+if __name__ == "__main__":
+    main()
