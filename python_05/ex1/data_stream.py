@@ -9,6 +9,7 @@ import abc
 class DataProcessor(abc.ABC):
     def __init__(self) -> None:
         self._data: list[str] = []
+        self._rank: int = 0
         self._processed: int = 0
 
     @abc.abstractmethod
@@ -24,9 +25,9 @@ class DataProcessor(abc.ABC):
             return -1, ""
 
         value = self._data.pop(0)
-        self._processed += 1
+        self._rank += 1
 
-        return self._processed - 1, value
+        return self._rank, value
 
     def remaining(self) -> int:
         return len(self._data)
@@ -45,15 +46,20 @@ class NumericProcessor(DataProcessor):
             return all(isinstance(x, (int, float)) for x in data)
         return False
 
-    def ingest(self, data: typing.Any) -> None:
+    def ingest(
+        self,
+        data: int | float | list[int | float],
+    ) -> None:
         if not self.validate(data):
             return
 
         if isinstance(data, (int, float)):
             self._data.append(str(data))
+            self._processed += 1
         else:
             for x in data:
                 self._data.append(str(x))
+                self._processed += 1
 
 
 # ---------------- Text Processor ----------------
@@ -66,15 +72,20 @@ class TextProcessor(DataProcessor):
             return all(isinstance(x, str) for x in data)
         return False
 
-    def ingest(self, data: typing.Any) -> None:
+    def ingest(
+        self,
+        data: str | list[str],
+    ) -> None:
         if not self.validate(data):
             return
 
         if isinstance(data, str):
             self._data.append(data)
+            self._processed += 1
         else:
             for x in data:
                 self._data.append(x)
+                self._processed += 1
 
 
 # ---------------- Log Processor ----------------
@@ -93,11 +104,15 @@ class LogProcessor(DataProcessor):
         if not isinstance(data, dict):
             return False
         return all(
-            isinstance(k, str) and isinstance(v, str)
-            for k, v in data.items()
+            isinstance(key, str) and isinstance(value, str)
+            for key, value in data.items()
         )
 
-    def ingest(self, data: typing.Any) -> None:
+    def ingest(
+        self,
+        data: dict[str, str]
+        | list[dict[str, str]],
+    ) -> None:
         if not self.validate(data):
             return
 
@@ -106,9 +121,11 @@ class LogProcessor(DataProcessor):
 
         if isinstance(data, dict):
             self._data.append(fmt(data))
+            self._processed += 1
         else:
             for x in data:
                 self._data.append(fmt(x))
+                self._processed += 1
 
 
 # ---------------- DataStream ----------------
@@ -150,61 +167,71 @@ class DataStream:
             )
 
 
-# ---------------- Demo ----------------
+# ---------------- Test Scenario ----------------
 
-print("=== Code Nexus - Data Stream ===")
+def main() -> None:
+    print("=== Code Nexus - Data Stream ===\n")
 
-stream = DataStream()
+    stream = DataStream()
 
-print("Initialize Data Stream...")
-stream.print_processors_stats()
+    print("Initialize Data Stream...")
+    stream.print_processors_stats()
 
-print("Registering Numeric Processor")
-stream.register_processor(NumericProcessor())
+    print("\n")
+    print("Registering Numeric Processor")
+    stream.register_processor(NumericProcessor())
 
-batch = [
-    "Hello world",
-    [3.14, -1, 2.71],
-    [
-        {"log_level": "WARNING",
-         "log_message": "Telnet access! Use ssh instead"},
-        {"log_level": "INFO",
-         "log_message": "User wil is connected"},
-    ],
-    42,
-    ["Hi", "five"],
-]
+    batch = [
+        "Hello world",
+        [3.14, -1, 2.71],
+        [
+            {"log_level": "WARNING",
+                "log_message": "Telnet access! Use ssh instead"},
+            {"log_level": "INFO",
+                "log_message": "User wil is connected"},
+        ],
+        42,
+        ["Hi", "five"],
+    ]
 
-print(
-    "Send first batch of data on stream:",
-    batch,
-)
+    print("\n")
+    print(
+        "Send first batch of data on stream:",
+        batch,
+    )
 
-stream.process_stream(batch)
+    stream.process_stream(batch)
 
-stream.print_processors_stats()
+    stream.print_processors_stats()
 
-print("Registering other data processors")
-stream.register_processor(TextProcessor())
-stream.register_processor(LogProcessor())
+    print("\n")
+    print("Registering other data processors")
+    stream.register_processor(TextProcessor())
+    stream.register_processor(LogProcessor())
 
-print("Send the same batch again")
-stream.process_stream(batch)
+    print("Send the same batch again")
+    stream.process_stream(batch)
 
-stream.print_processors_stats()
+    stream.print_processors_stats()
 
-print(
-    "Consume some elements from the data processors: Numeric 3, Text 2, Log 1"
-)
+    print("\n")
+    print(
+        "Consume some elements from the data processors: "
+        "Numeric 3, Text 2, Log 1"
+        )
 
-# consume demo
-for _ in range(3):
-    stream._processors[0].output()
+    # consume demo
+    for _ in range(3):
+        stream._processors[0].output()
 
-for _ in range(2):
-    stream._processors[1].output()
+    for _ in range(2):
+        stream._processors[1].output()
 
-for _ in range(1):
-    stream._processors[2].output()
+    for _ in range(1):
+        stream._processors[2].output()
 
-stream.print_processors_stats()
+    stream.print_processors_stats()
+
+
+if __name__ == "__main__":
+    main()
