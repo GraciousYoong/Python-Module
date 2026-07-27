@@ -25,9 +25,10 @@ class DataProcessor(abc.ABC):
             return -1, ""
 
         value = self._data.pop(0)
+        rank = self._rank
         self._rank += 1
 
-        return self._rank, value
+        return rank, value
 
     def remaining(self) -> int:
         return len(self._data)
@@ -116,15 +117,15 @@ class LogProcessor(DataProcessor):
         if not self.validate(data):
             return
 
-        def fmt(d: dict[str, str]) -> str:
+        def format_log(d: dict[str, str]) -> str:
             return f"{d['log_level']}: {d['log_message']}"
 
         if isinstance(data, dict):
-            self._data.append(fmt(data))
+            self._data.append(format_log(data))
             self._processed += 1
         else:
             for x in data:
-                self._data.append(fmt(x))
+                self._data.append(format_log(x))
                 self._processed += 1
 
 
