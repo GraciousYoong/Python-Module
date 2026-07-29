@@ -1,4 +1,4 @@
-import alchemy
+import alchemy.elements
 
 
 def main() -> None:
