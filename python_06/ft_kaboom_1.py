@@ -13,7 +13,7 @@ def main() -> None:
             )
         )
     except ImportError as error:
-        print("\n💥 BOOM! The laboratory exploded!")
+        print("\nBOOM! The laboratory exploded!")
         print(error)
         print("\n")
 
