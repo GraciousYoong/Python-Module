@@ -1,5 +1,5 @@
-from ex0.factories import CreatureFactory
-from ex1.creatures import (
+from ex0 import CreatureFactory
+from .creatures import (
     Sproutling,
     Bloomelle,
     Shiftling,

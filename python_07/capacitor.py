@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from ex1 import (
     HealingCreatureFactory,
     TransformCreatureFactory,
@@ -12,16 +10,16 @@ def test_healing_factory() -> None:
     factory = HealingCreatureFactory()
 
     print("base:")
-    creature = factory.create_base()
-    print(creature.describe())
-    print(creature.attack())
-    print(creature.heal())
+    base = factory.create_base()
+    print(base.describe())
+    print(base.attack())
+    print(base.heal())
 
     print("evolved:")
-    creature = factory.create_evolved()
-    print(creature.describe())
-    print(creature.attack())
-    print(creature.heal())
+    evolved = factory.create_evolved()
+    print(evolved.describe())
+    print(evolved.attack())
+    print(evolved.heal())
 
 
 def test_transform_factory() -> None:
@@ -30,20 +28,20 @@ def test_transform_factory() -> None:
     factory = TransformCreatureFactory()
 
     print("base:")
-    creature = factory.create_base()
-    print(creature.describe())
-    print(creature.attack())
-    print(creature.transform())
-    print(creature.attack())
-    print(creature.revert())
+    base = factory.create_base()
+    print(base.describe())
+    print(base.attack())
+    print(base.transform())
+    print(base.attack())
+    print(base.revert())
 
     print("evolved:")
-    creature = factory.create_evolved()
-    print(creature.describe())
-    print(creature.attack())
-    print(creature.transform())
-    print(creature.attack())
-    print(creature.revert())
+    evolved = factory.create_evolved()
+    print(evolved.describe())
+    print(evolved.attack())
+    print(evolved.transform())
+    print(evolved.attack())
+    print(evolved.revert())
 
 
 def main() -> None:
