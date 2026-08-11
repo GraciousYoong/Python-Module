@@ -27,9 +27,10 @@ def show_dotenv_install_help() -> None:
 # Loads the .env file
 # Saves the original environment to see the comparison after loading .env
 # Avoids a mypy issue from assigning None to an imported function name.
+# # type: ignore[error-code] tell mypy to ignore this type-checking error.
 def load_environment() -> set[str] | None:
     try:
-        from dotenv import load_dotenv
+        from dotenv import load_dotenv  # type: ignore[import-not-found]
     except ImportError:
         show_dotenv_install_help()
         return None
