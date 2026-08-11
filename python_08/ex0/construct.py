@@ -14,12 +14,16 @@ sys:
 
 os:
 - Provides OS-related functions.
+- os.path provides path-manipulation functions.
 - os.path.basename(path) = gets the last part of a path.
   Example: "/project/matrix_env" -> "matrix_env"
 
 site:
 - Provides information about Python package installation.
-- site.getsitepackages() = returns site-packages directories.
+- site.getsitepackages() = returns site-packages directories(spd).
+- The site-packages directory is the default target location where
+    Python installs third-party libraries and modules that are not
+    part of the standard, core Python distribution.
 
 hasattr(object, attribute):
 - Checks whether an object has a specific attribute.
