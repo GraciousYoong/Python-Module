@@ -24,16 +24,6 @@ site:
 - The site-packages directory is the default target location where
     Python installs third-party libraries and modules that are not
     part of the standard, core Python distribution.
-
-hasattr(object, attribute):
-- Checks whether an object has a specific attribute.
-- Returns True or False.
-
-VIRTUAL ENVIRONMENT DETECTION:
-- Older virtualenv: sys.real_prefix exists.
-- venv: sys.base_prefix != sys.prefix.
-- If either condition is true -> inside virtual environment.
-- Otherwise -> using the global environment.
 """
 
 
@@ -58,6 +48,23 @@ def display_venv_in() -> None:
     print("\nSUCCESS: You're in an isolated environemnt!")
     print("Safe to install packages without affecting the global system.\n")
     print("Package installation path:", site.getsitepackages())
+
+
+'''
+hasattr(object, attribute):
+- Checks whether an object has a specific attribute.
+- Returns True or False.
+- hasattr return True if sys has real_prefix or base_prefix
+    attribute.
+
+VIRTUAL ENVIRONMENT DETECTION:
+- sys.real_prefix: real_prefix is virtual-environment indicator,
+    associated with the older virtualenv mechanism.
+- sys.prefix = path of the current Python environment.
+- sys.base_prefix = path of the original/base Python installation.
+- when outside venv, sys.base_prefix == sys.prefix,
+    when inside venv, sys.base_prefix != sys.prefix.
+'''
 
 
 def construct() -> None:
