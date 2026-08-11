@@ -4,28 +4,36 @@ import site
 
 
 """
-If sys.base_prefix is different from sys.prefix, it shows that the script
-is running inside a virtual environment.
+VIRTUAL ENVIRONMENT NOTES:
 
-If the old-version "real_prefix" exists, it means I uses the venv
-to run the older version of Python.
+sys:
+- Python interpreter/system information.
+- sys.executable = path of the Python interpreter currently running.
+- sys.prefix = path of the current Python environment.
+- sys.base_prefix = path of the original/base Python installation.
 
-hasattr() function returns True if the object has the attribute.
+os:
+- Provides OS-related functions.
+- os.path.basename(path) = gets the last part of a path.
+  Example: "/project/matrix_env" -> "matrix_env"
 
-Vocabluary:
-sys.executable   -> the Python binary currently running
-sys.prefix       -> the active environment root
-sys.base_prefix  -> the original/base Python install
-site-packages    -> package install location derived from
-                    the active environment
-os.path.basename -> to extract the final part of a file path
+site:
+- Provides information about Python package installation.
+- site.getsitepackages() = returns site-packages directories.
 
-python.exe is the worker doing the job.
-package is the toolbox for the worker.
+hasattr(object, attribute):
+- Checks whether an object has a specific attribute.
+- Returns True or False.
+
+VIRTUAL ENVIRONMENT DETECTION:
+- Older virtualenv: sys.real_prefix exists.
+- venv: sys.base_prefix != sys.prefix.
+- If either condition is true -> inside virtual environment.
+- Otherwise -> using the global environment.
 """
 
 
-def display_outside_venv() -> None:
+def display_venv_out() -> None:
     print("\nMATRIX STATUS: You're still plugged in.\n")
     print("Current Python:", sys.executable)
     print("Virtual Environment: None detected\n")
@@ -38,7 +46,7 @@ def display_outside_venv() -> None:
     print("\nThen run this program again.")
 
 
-def display_inside_venv() -> None:
+def display_venv_in() -> None:
     print("\nMATRIX STATUS: Welcome to the construct\n")
     print("Current Python:", sys.executable)
     print("Virtual Environment:", os.path.basename(sys.prefix))
@@ -56,9 +64,9 @@ def construct() -> None:
             and sys.base_prefix != sys.prefix
         )
     ):
-        display_inside_venv()
+        display_venv_in()
     else:
-        display_outside_venv()
+        display_venv_out()
 
 
 if __name__ == "__main__":
