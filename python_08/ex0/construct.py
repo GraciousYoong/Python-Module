@@ -50,24 +50,20 @@ def display_venv_in() -> None:
     print("Package installation path:", site.getsitepackages())
 
 
-'''
-hasattr(object, attribute):
-- Checks whether an object has a specific attribute.
-- Returns True or False.
-- hasattr return True if sys has real_prefix or base_prefix
-    attribute.
+# hasattr(object, attribute):
+# - Checks whether an object has a specific attribute.
+# - Returns True or False.
+# - hasattr return True if sys has real_prefix or base_prefix
+#     attribute.
 
-VIRTUAL ENVIRONMENT DETECTION:
-- sys.real_prefix: real_prefix is virtual-environment indicator,
-    associated with the older virtualenv mechanism.
-- sys.prefix = path of the current Python environment.
-- sys.base_prefix = path of the original/base Python installation.
-- when outside venv, sys.base_prefix == sys.prefix,
-    when inside venv, sys.base_prefix != sys.prefix.
-'''
-
-
-def construct() -> None:
+# VIRTUAL ENVIRONMENT DETECTION:
+# - sys.real_prefix: real_prefix is virtual-environment indicator,
+#     associated with the older virtualenv mechanism.
+# - sys.prefix = path of the current Python environment.
+# - sys.base_prefix = path of the original/base Python installation.
+# - when outside venv, sys.base_prefix == sys.prefix,
+#     when inside venv, sys.base_prefix != sys.prefix.
+def main() -> None:
     if (
         hasattr(sys, 'real_prefix')
         or (
@@ -81,4 +77,4 @@ def construct() -> None:
 
 
 if __name__ == "__main__":
-    construct()
+    main()

@@ -2,15 +2,6 @@ import os
 import sys
 
 
-CONFIG_NAMES = [
-    "MATRIX_MODE",
-    "DATABASE_URL",
-    "API_KEY",
-    "LOG_LEVEL",
-    "ZION_ENDPOINT",
-]
-
-
 REQUIRED_NAMES = [
     "DATABASE_URL",
     "API_KEY",
@@ -26,8 +17,8 @@ def show_dotenv_install_help() -> None:
 
 # Loads the .env file
 # Saves the original environment to see the comparison after loading .env
-# Avoids a mypy issue from assigning None to an imported function name.
-# # type: ignore[error-code] tell mypy to ignore this type-checking error.
+# python-dotenv may not be installed or may not provide type information.
+# Ignore only mypy's import-not-found error for this optional dependency.
 def load_environment() -> set[str] | None:
     try:
         from dotenv import load_dotenv  # type: ignore[import-not-found]
@@ -125,16 +116,6 @@ def show_missing_config(missing: list[str]) -> None:
     print("Then edit .env with your local values")
 
 
-# Validate if .gitignore has .env listed
-# splitlines() splits a string into a list of strings at line breaks.
-def gitignore_has_env() -> bool:
-    if not os.path.exists(".gitignore"):
-        return False
-
-    with open(".gitignore", "r", encoding="utf-8") as file:
-        return ".env" in file.read().splitlines()
-
-
 def show_security_check(
         config: dict[str, str | None],
         original_environment: set[str],
@@ -159,7 +140,7 @@ def show_security_check(
         name_str = ", ".join(overridden_names)
         print("[OK] Environment override detected: " + name_str)
     else:
-        print("[OK] Production overrides available")
+        print("[OK] No environment overrides detected")
 
 
 def main() -> int:
