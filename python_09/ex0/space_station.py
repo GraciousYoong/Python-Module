@@ -1,31 +1,61 @@
-from pydantic import BaseModel, EmailStr, Field, ValidationError
+from datetime import datetime
+from pydantic import (
+    BaseModel,
+    Field,
+    ValidationError,
+)
+from typing import Optional
 
-# 1. Define the schema by inheriting from BaseModel
-class User(BaseModel):
-    # Minimum value constraint: id must be 1 or higher
-    id: int = Field(gt=0)                              
-    
-    # String length constraint: name must be between 2 and 50 characters
-    name: str = Field(min_length=2, max_length=50)                            
-    
-    # Strict email validation replaces the plain 'str' type hint
-    email: EmailStr                           
-    
-    # Numeric constraint: if age is provided, it must be between 0 and 120
-    age: int | None = Field(default=None, ge=0, le=120)               
-    
-    is_active: bool = True               
 
-# 2. Parse and validate valid data 
-valid_user = User(id="123", name="Alice", email="alice@example.com")
-print(valid_user.id)  # Output: 123 (integer)
+class SpaceStation(BaseModel):
+    station_id: str = Field(min_length=3, max_length=10)
+    name: str = Field(min_length=1, max_length=50)
+    crew_size: int = Field(ge=1, le=20)
+    power_level: float = Field(ge=0.0, le=100.0)
+    oxygen_level: float = Field(ge=0.0, le=100.0)
+    last_maintenance: datetime
+    is_operational: bool = True
+    notes: Optional[str] = Field(default=None, max_length=200)
 
-# 3. Export to JSON
-json_data = valid_user.model_dump_json()
-print(json_data)
 
-# 4. Invalid data now accurately catches bad emails and bad field constraints
-try:
-    invalid_user = User(id=0, name="B", email="not-an-email", age=-5)
-except ValidationError as e:
-    print(e)
+def main() -> None:
+    print("Space Station Data Validation")
+    print("========================================")
+
+    station = SpaceStation(
+        station_id="ISS001",
+        name="International Space Station",
+        crew_size=6,
+        power_level=85.5,
+        oxygen_level=92.3,
+        last_maintenance=datetime.now(),
+    )
+
+    print("Valid station created:")
+    print(f"ID: {station.station_id}")
+    print(f"Name: {station.name}")
+    print(f"Crew: {station.crew_size} people")
+    print(f"Power: {station.power_level}%")
+    print(f"Oxygen: {station.oxygen_level}%")
+
+    status = "Operational" if station.is_operational else "Offline"
+    print(f"Status: {status}")
+
+    print("========================================")
+    print("Expected validation error:")
+
+    try:
+        SpaceStation(
+            station_id="ISS002",
+            name="Test Station",
+            crew_size=25,
+            power_level=85.5,
+            oxygen_level=92.3,
+            last_maintenance=datetime.now(),
+        )
+    except ValidationError as e:
+        print(e)
+
+
+if __name__ == "__main__":
+    main()
