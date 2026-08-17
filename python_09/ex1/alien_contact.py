@@ -1,10 +1,15 @@
 from datetime import datetime
 from enum import Enum
+from typing import Optional
+from pydantic import (  # type: ignore[import-not-found]
+    BaseModel,
+    Field,
+    ValidationError,
+    model_validator,
+)
 
-from pydantic import BaseModel, Field, ValidationError, model_validator
 
-
-class ContactType(Enum):
+class ContactType(str, Enum):
     RADIO = "radio"
     VISUAL = "visual"
     PHYSICAL = "physical"
@@ -19,7 +24,7 @@ class AlienContact(BaseModel):
     signal_strength: float = Field(ge=0.0, le=10.0)
     duration_minutes: int = Field(ge=1, le=1440)
     witness_count: int = Field(ge=1, le=100)
-    message_received: str | None = Field(
+    message_received: Optional[str] = Field(
         default=None,
         max_length=500,
     )
@@ -79,11 +84,9 @@ def main() -> None:
     print(f"Witnesses: {contact.witness_count}")
     print(f"Message: '{contact.message_received}'")
 
-    print("======================================")
+    print("\n======================================")
 
     # Invalid contact
-    print("Expected validation error:")
-
     try:
         AlienContact(
             contact_id="AC_2024_002",
@@ -94,8 +97,10 @@ def main() -> None:
             duration_minutes=20,
             witness_count=2,
         )
-    except ValidationError as error:
-        print(error)
+    except ValidationError as e:
+        print("Expected validation error:")
+        for err in e.errors():
+            print(err["msg"])
 
 
 if __name__ == "__main__":

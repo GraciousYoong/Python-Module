@@ -1,5 +1,5 @@
 from datetime import datetime
-from pydantic import (
+from pydantic import (  # type: ignore[import-not-found]
     BaseModel,
     Field,
     ValidationError,
@@ -41,9 +41,7 @@ def main() -> None:
     status = "Operational" if station.is_operational else "Offline"
     print(f"Status: {status}")
 
-    print("========================================")
-    print("Expected validation error:")
-
+    print("\n========================================")
     try:
         SpaceStation(
             station_id="ISS002",
@@ -54,7 +52,9 @@ def main() -> None:
             last_maintenance=datetime.now(),
         )
     except ValidationError as e:
-        print(e)
+        print("Expected validation error:")
+        for err in e.errors():
+            print(err["msg"])
 
 
 if __name__ == "__main__":
